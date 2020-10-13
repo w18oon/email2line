@@ -7,7 +7,7 @@ use App\Notification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class TestController extends Controller
+class PushNotifyController extends Controller
 {
     protected $client;
     protected $service;

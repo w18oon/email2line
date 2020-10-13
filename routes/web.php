@@ -18,7 +18,7 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::get('test', 'TestController@index');
+Route::get('push-notify', 'PushNotifyController@index');
 
 // Route::get('noti', 'TestController@test_one_to_many');
 
