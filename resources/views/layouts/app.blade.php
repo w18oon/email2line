@@ -31,12 +31,17 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item {{ Request::is('lookups')? 'active': null }}">
+                        {{-- <li class="nav-item {{ Request::is('lookups')? 'active': null }}">
                             <a class="nav-link" href="{{ route('lookups.index') }}">Lookups</a>
                         </li>
                         <li class="nav-item {{ Request::is('notifications')? 'active': null }}">
                             <a class="nav-link" href="{{ route('notifications.index') }}">Notifications</a>
+                        </li> --}}
+                        @foreach ($menus as $menu)
+                        <li class="nav-item {{ Request::is($menu['slug'])? 'active': null }}">
+                            <a class="nav-link" href="{{ route($menu['slug'] . '.index') }}">{{ $menu['label'] }}</a>
                         </li>
+                        @endforeach
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">

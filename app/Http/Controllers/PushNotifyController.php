@@ -50,7 +50,7 @@ class PushNotifyController extends Controller
         $this->rest_resource = $this->service->users_messages;
     }
 
-    function index()
+    public function index()
     {
         // Lists the messages in the user's mailbox.
         $user_id = 'me';

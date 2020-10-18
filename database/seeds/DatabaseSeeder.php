@@ -20,8 +20,18 @@ class DatabaseSeeder extends Seeder
         // ]);
         User::create([
             'name' => 'Admin',
-            'email' => 'notify2email@gmail.com',
+            'email' => 'admin@email2line.com',
             'password' => Hash::make('Admin'),
         ]);
+
+        factory(App\Group::class, 10)->create()->each(function($group) {
+            $group->mappings()->saveMany(
+                factory(App\Mapping::class, rand(1,8))->make()
+            )->each(function($mapping) {
+                $mapping->logs()->saveMany(
+                    factory(App\Log::class, rand(1,30))->make()
+                );
+            });
+        });
     }
 }

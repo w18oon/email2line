@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::share('menus', [
+            ['slug' => 'groups', 'label' => 'Groups'],
+            ['slug' => 'mappings', 'label' => 'Mappings'],
+            ['slug' => 'reports', 'label' => 'Reports'],
+            ['slug' => 'users', 'label' => 'Users'],
+            ['slug' => 'gmail-auth', 'label' => 'Gmail Auth'],
+        ]);
     }
 }
