@@ -80,7 +80,7 @@ class ClientController extends Controller
     public function push_notify()
     {
         // Lists the messages in the user's mailbox.
-        $results = $this->google_rest_source->listUsersMessages(self::GMAIL_USER_ID, ['q' => "subject:Alarm is:unread"]);
+        $results = $this->google_rest_source->listUsersMessages(self::GMAIL_USER_ID, ['q' => "is:unread"]);
         foreach ($results->messages as $message) {
             // Get subject from Resource Message
             $payload = $this->google_rest_source->get(self::GMAIL_USER_ID, $message->id)->payload;
@@ -95,26 +95,26 @@ class ClientController extends Controller
                 if ($part['mimeType'] === 'text/html') {
                     $body = base64_decode(str_replace(['-', '_'], ['+', '/'], $part->body->data), true);
                 }
-            }
-
-            // Get plain text 
-            libxml_use_internal_errors(true);
-            $doc = new \DOMDocument();
-            $doc->preserveWhiteSpace = true;
-            $doc->loadHTML($body);
-            $line_message = '';
-            $trs = $doc->getElementsByTagName('tr');
-            foreach ($trs as $tr) {
-                $line_message .= "\n" . $tr->childNodes[0]->nodeValue . " : " . $tr->childNodes[1]->nodeValue;
-            }
+            }            
 
             // Get mapping && group table
             $mappings = Mapping::with('group')->where('subject', $subject)->get();
             $results_line_notify = '';
             $line_notify_flag = false;
             foreach ($mappings as $mapping) {
-                $log_count = DB::table('logs')->where('mapping_id', $mapping->id)->whereRaw("created_at >= date_format(now(),'%Y-%m-%d %h:00:00')")->count();
+                $log_count = DB::table('logs')->where('mapping_id', $mapping->id)->where('line_notify_flag', true)->whereRaw("created_at >= date_format(now(),'%Y-%m-%d %H:00:00')")->count();
+                // echo "log_count => $log_count";
                 if ($log_count == 0) {
+                    // Get plain text 
+                    libxml_use_internal_errors(true);
+                    $doc = new \DOMDocument();
+                    $doc->preserveWhiteSpace = true;
+                    $doc->loadHTML($body);
+                    $line_message = '';
+                    $trs = $doc->getElementsByTagName('tr');
+                    foreach ($trs as $tr) {
+                        $line_message .= "\n" . $tr->childNodes[0]->nodeValue . " : " . $tr->childNodes[1]->nodeValue;
+                    }
                     // Call LINE Notify API
                     $line_client = new \GuzzleHttp\Client();
                     $results_line_notify = $line_client->request('POST', self::LINE_NOTIFY_URI, [

@@ -11,7 +11,7 @@
     <label for="group_id">Group name</label>
     <select class="custom-select @error('group_id') is-invalid @enderror" name="group_id" id="group_id">
         @foreach ($groups as $group)
-        <option value="{{ $group->id }}">{{ $group->name }}</option>
+        <option value="{{ $group->id }}" {{ $group->id == $mapping->group_id? 'selected=selected': null }}>{{ $group->name }}</option>
         @endforeach
     </select>
     @error('group_id')

@@ -24,14 +24,14 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Admin'),
         ]);
 
-        factory(App\Group::class, 10)->create()->each(function($group) {
-            $group->mappings()->saveMany(
-                factory(App\Mapping::class, rand(1,8))->make()
-            )->each(function($mapping) {
-                $mapping->logs()->saveMany(
-                    factory(App\Log::class, rand(1,30))->make()
-                );
-            });
-        });
+        // factory(App\Group::class, 10)->create()->each(function($group) {
+        //     $group->mappings()->saveMany(
+        //         factory(App\Mapping::class, rand(1,8))->make()
+        //     )->each(function($mapping) {
+        //         $mapping->logs()->saveMany(
+        //             factory(App\Log::class, rand(1,30))->make()
+        //         );
+        //     });
+        // });
     }
 }

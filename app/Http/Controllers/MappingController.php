@@ -90,7 +90,8 @@ class MappingController extends Controller
     public function update(MappingRequest $request, Mapping $mapping)
     {
         $group = Group::find($request->group_id);
-        $group->mappings()->where('id', $mapping->id)->update($request->only('subject'));
+        $mapping->group()->associate($group)->save();
+        // $group->mappings()->where('id', $mapping->id)->update($request->only('subject'));
         return redirect()->route(self::BASE_ROUTE . '.index')->with('success', 'Mapping has been updated.');
     }
 
